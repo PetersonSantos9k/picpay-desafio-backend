@@ -26,7 +26,6 @@ public class UserService {
     }
 
     public UserResponseDTO create(UserRequestDTO dto){
-
         if(userRepository.existsByTaxIdOrEmail(dto.taxId(), dto.email())){
             throw new UserException("");
         }

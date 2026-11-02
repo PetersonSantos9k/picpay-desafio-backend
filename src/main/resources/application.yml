@@ -11,3 +11,24 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+integration:
+  payment:
+    enabled: true
+    base-url: https://util.devi.tools
+    authorize-transaction-path: /api/v2/authorize
+    connect-timeout: 5s
+    read-timeout: 10s
+    max-retries: 3
+
+  email:
+    enabled: true
+    base-url: https://util.devi.tools
+    send-email-path: /api/v1/notify
+    connect-timeout: 5s
+    read-timeout: 10s
+    max-retries: 2
+
+
+
+
