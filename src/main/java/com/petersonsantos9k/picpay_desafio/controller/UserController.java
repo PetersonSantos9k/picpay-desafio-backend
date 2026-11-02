@@ -1,6 +1,7 @@
 package com.petersonsantos9k.picpay_desafio.controller;
 
-import com.petersonsantos9k.picpay_desafio.dto.request.UserRequestDTO;
+import com.petersonsantos9k.picpay_desafio.dto.request.UserCreateRequestDTO;
+import com.petersonsantos9k.picpay_desafio.dto.request.UserDepositRequestDTO;
 import com.petersonsantos9k.picpay_desafio.dto.response.UserResponseDTO;
 import com.petersonsantos9k.picpay_desafio.service.UserService;
 import jakarta.validation.Valid;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -19,7 +20,7 @@ public class UserController {
     private static final String message = "";
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> create(@RequestBody @Valid UserRequestDTO dto){
+    public ResponseEntity<UserResponseDTO> create(@RequestBody @Valid UserCreateRequestDTO dto){
         return ResponseEntity.ok().body(
             userService.create(dto)
         );
@@ -32,5 +33,11 @@ public class UserController {
         );
     }
 
+    @PostMapping("/deposit")
+    public ResponseEntity<UserResponseDTO> deposit(@RequestBody @Valid UserDepositRequestDTO dto){
+        return ResponseEntity.ok().body(
+            userService.deposit(dto)
+        );
+    }
 
 }

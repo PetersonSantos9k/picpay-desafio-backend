@@ -47,7 +47,6 @@ public class TransferService {
         repository.save(newTransfer);
     }
 
-
     private boolean authorizeTransaction() {
 
         TransactionAuthorizationResponse response = paymentClient.authorizeTransaction()
