@@ -1,4 +1,4 @@
-package com.petersonsantos9k.picpay_desafio.dto;
+package com.petersonsantos9k.picpay_desafio.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
