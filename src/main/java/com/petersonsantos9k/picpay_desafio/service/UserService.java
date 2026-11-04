@@ -9,6 +9,7 @@ import com.petersonsantos9k.picpay_desafio.exception.UserException;
 import com.petersonsantos9k.picpay_desafio.repository.UserRepository;
 import com.petersonsantos9k.picpay_desafio.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -37,6 +39,7 @@ public class UserService {
         obj.setUserType(userType);
 
         obj = userRepository.save(obj);
+        log.info("User created successfully. User ID: {}", obj.getId());
         return userMapper.toResponse(obj);
     }
 
@@ -49,6 +52,7 @@ public class UserService {
         User user = getUserById(dto.userId());
         user.deposit(dto.amount());
         userRepository.save(user);
+        log.info("Deposit completed successfully. User ID: {}", user.getId());
         return userMapper.toResponse(user);
     }
 
@@ -60,8 +64,6 @@ public class UserService {
     protected void updateUser(User user){
         userRepository.save(user);
     }
-
-
 
     private User getUserById(UUID id){
         return userRepository.findById(id)

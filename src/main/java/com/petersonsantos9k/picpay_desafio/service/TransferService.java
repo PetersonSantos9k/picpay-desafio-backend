@@ -1,27 +1,31 @@
 package com.petersonsantos9k.picpay_desafio.service;
 
-
-import com.petersonsantos9k.picpay_desafio.client.payment.PaymentClient;
+import com.petersonsantos9k.picpay_desafio.client.Payment;
 import com.petersonsantos9k.picpay_desafio.domain.Transfer;
 import com.petersonsantos9k.picpay_desafio.domain.User;
 import com.petersonsantos9k.picpay_desafio.dto.client.TransactionAuthorizationResponse;
 import com.petersonsantos9k.picpay_desafio.dto.request.TransferRequestDTO;
 import com.petersonsantos9k.picpay_desafio.exception.TransferException;
-import com.petersonsantos9k.picpay_desafio.repository.TransferRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TransferService {
 
-    private final TransferRepository repository;
-    private final PaymentClient paymentClient;
+    private final TransferPersistenceService persistenceService;
 
+    @Qualifier("paymentClient")
+    private final Payment paymentClient;
     private final UserService userService;
+    private final EmailService emailService;
 
 
     @Transactional
@@ -43,8 +47,17 @@ public class TransferService {
         userService.updateUser(payer);
         userService.updateUser(payee);
 
+
+        emailService.sendTransferEmails();
+
         Transfer newTransfer = new Transfer(payer, payee, value);
-        repository.save(newTransfer);
+
+        try{
+            persistenceService.save(newTransfer);
+        } catch (DataAccessException ex){
+            log.error("Error occurred while saving transfer", ex);
+        }
+
     }
 
     private boolean authorizeTransaction() {

@@ -60,7 +60,7 @@ public class User {
     public void withdraw(BigDecimal amount){
 
         if (this.userType == UserType.MERCHANT) {
-            throw new UserException("Merchants cannot make transfers");
+            throw new UserException("Merchant accounts cannot withdraw funds");
         }
 
         if(amount == null || amount.compareTo(BigDecimal.ZERO)<=0){
